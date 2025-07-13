@@ -2,6 +2,8 @@
 project "GLFW"
 
 	kind "StaticLib"
+	staticruntime "on"
+
 	language "C"
 	
 	targetdir ("bin/" .. outputdir .. "%{prj.name}")
@@ -24,17 +26,10 @@ project "GLFW"
 
 	filter "system:windows"
 		systemversion "latest"
-		staticruntime "On"
 
 		files
 		{
-			"src/win32_init.c",
-			"src/win32_joystick.c",
-			"src/win32_monitor.c",
-			"src/win32_module.c",
-			"src/win32_thread.c",
-			"src/win32_time.c",
-			"src/win32_window.c",
+			"src/win32*",
 			"src/wgl_context.c",
 			"src/egl_context.c",
 			"src/osmesa_context.c"
@@ -46,9 +41,10 @@ project "GLFW"
 			"_CRT_SECURE_NO_WARNINGS"
 		}
 
---	filter { "system:windows", "configurations:Debug" }
---		buildoptions "/MTd"
+	filter "configurations:Debug"
+		runtime "Debug"
+		symbols "on"
 
---	filter { "system:windows", "configurations:Release" }
---		buildoptions "/MT"
-	
+	filter "configurations:Release"
+		runtime "Release"
+		optimize "on"
